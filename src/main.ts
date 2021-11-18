@@ -4,7 +4,7 @@ import * as options from './options';
 
 (async () => {
   try {
-    const cli = getCLI();
+    let cli = getCLI();
 
     // Validate options first so we can fail early.
     options.checkEnvironmentVariables();
@@ -23,6 +23,11 @@ import * as options from './options';
       false
     );
     const version = await options.getVersion();
+    const selfHostedUrl = options.getSelfHostedUrl();
+
+    if (selfHostedUrl !== '') {
+      cli = getCLI(undefined, {url: selfHostedUrl});
+    }
 
     core.debug(`Version is ${version}`);
     await cli.new(version, {projects});

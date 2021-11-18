@@ -1,4 +1,4 @@
-import SentryCli, {SentryCliReleases} from '@sentry/cli';
+import SentryCli, {SentryCliOptions, SentryCliReleases} from '@sentry/cli';
 // @ts-ignore
 import {version} from '../package.json';
 
@@ -8,12 +8,15 @@ import {version} from '../package.json';
  * When the `MOCK` environment variable is set, stub out network calls.
  */
 let cli: SentryCliReleases;
-export const getCLI = (): SentryCliReleases => {
+export const getCLI = (
+  configFile?: string | null | undefined,
+  options?: SentryCliOptions | undefined
+): SentryCliReleases => {
   // Set the User-Agent string.
   process.env['SENTRY_PIPELINE'] = `github-action-release/${version}`;
 
   if (!cli) {
-    cli = new SentryCli().releases;
+    cli = new SentryCli(configFile, options).releases;
     if (process.env['MOCK']) {
       cli.execute = async (
         args: string[],

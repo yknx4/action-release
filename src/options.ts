@@ -165,3 +165,7 @@ export const getProjects = (): string[] => {
 export const getUrlPrefixOption = (): string => {
   return core.getInput('url_prefix');
 };
+
+export const getSelfHostedUrl = (): string => {
+  return core.getInput('self_hosted_url');
+};
